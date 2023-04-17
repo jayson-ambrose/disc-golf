@@ -55,7 +55,7 @@ class Round(DefaultBase):
     score = db.Column(db.Integer)
     date = db.Column(db.Date, server_default=db.func.current_date())
 
-    course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
+    course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
 
     scorecards = db.relationship('Scorecard', backref='round')
     players = association_proxy('scorecards', 'player')
