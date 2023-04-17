@@ -25,7 +25,7 @@ class Round(db.Model, SerializerMixin):
     over_under = db.Column(db.Integer)
 
     scorecards = db.relationship('Scorecard', backref='round')
-    players = db.association_proxy('scorecards', 'player')
+    players = association_proxy('scorecards', 'player')
 
 class Scorecard(db.Model, SerializerMixin):
     __tablename__ = 'scorecards'
