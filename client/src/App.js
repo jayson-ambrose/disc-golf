@@ -1,10 +1,23 @@
 import React from 'react'
-import './App.css';
+import './styles/App.css';
+import './components/Navbar'
+import Navbar from './components/Navbar';
+import GameTracker from './components/GameTracker'
+import Browse from './components/Browse'
+import Stats from './components/Stats'
+import Access from './components/Access'
 
 function App() {
   return (
     <div>
-      Hello World!
+      <h1>Pocket Caddy</h1>
+      <Navbar />
+      <hr/>
+      <Access />
+      <hr/>
+      <GameTracker />
+      <Browse />
+      <Stats />
     </div>
   );
 }
