@@ -32,7 +32,7 @@ class User(DefaultBase):
     @password.setter
     def password(self, password):
         password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
-        self._password = password_hash.decode('utf-8')
+        self._password = password_hash
 
     def auth(self, password):
         return bcrypt.check_password_hash(self.password, password)
