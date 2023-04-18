@@ -23,7 +23,10 @@ class ClearSession(Resource):
 class Users(Resource):
     def get(self):
         users = [user.to_dict() for user in User.query.all()]
-        return make_response(users, 200)    
+        return make_response(users, 200)
+    def post(self):
+        req = request.get_json()
+        u = User(username=req.get('username'), password=req.get('password'))
 
 class Login(Resource):
 
