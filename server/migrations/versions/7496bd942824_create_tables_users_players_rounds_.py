@@ -35,7 +35,7 @@ def upgrade():
     )
     op.create_table('users',
     sa.Column('username', sa.String(), nullable=True),
-    sa.Column('_password_hash', sa.String(), nullable=False),
+    sa.Column('_password', sa.String(), nullable=False),
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),

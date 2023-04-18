@@ -5,6 +5,7 @@
 # Remote library imports
 from flask import request, make_response, session
 from flask_restful import Resource
+from sqlalchemy.exc import IntegrityError
 
 # Local imports
 from config import app, db, api
@@ -27,6 +28,22 @@ class Users(Resource):
     def post(self):
         req = request.get_json()
         u = User(username=req.get('username'), password=req.get('password'))
+        session.add(u)
+        try:
+            session.commit()
+            return make_response(u.to_dict(), 201)
+        except IntegrityError:
+            session.rollback()
+            return make_response({'error': 'error 400: Username already taken!'}, 400)
+        
+class Rounds(Resource):
+    def get(self):
+        round_list = [r.to_dict() for r in Round.query.all()]
+        return make_response(round_list, 200)
+    def post(self):
+        req_data = request.get_json()
+        r = Round
+
 
 class Login(Resource):
 

@@ -3,6 +3,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import validates
 from sqlalchemy.ext.hybrid import hybrid_property
 
+
 from config import db, bcrypt
 
 # Models go here!
@@ -51,8 +52,6 @@ class Player(DefaultBase):
 class Round(DefaultBase):
     __tablename__ = 'rounds'
 
-    par = db.Column(db.Integer)
-    score = db.Column(db.Integer)
     date = db.Column(db.Date, server_default=db.func.current_date())
 
     course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
