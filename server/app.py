@@ -26,7 +26,7 @@ class Users(Resource):
         return make_response(users, 200)
     def post(self):
         req = request.get_json()
-        u = User(username=req.get('username'), password=req.get('password')
+        u = User(username=req.get('username'), password=req.get('password'))
 
 class Login(Resource):
 
