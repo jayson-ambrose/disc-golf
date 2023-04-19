@@ -15,6 +15,8 @@ class DefaultBase(db.Model, SerializerMixin):
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
+    serialize_rules = ('-children.children',)
+
     def __repr__(self):
         return f'<Instance of {self.__class__.__name__}, ID {self.id}>'
 
@@ -25,6 +27,8 @@ class User(DefaultBase):
     _password = db.Column(db.String, nullable=False)
 
     players = db.relationship('Player', backref='user')
+
+    serialize_rules = ('-_password', '-password')
 
     @hybrid_property
     def password(self):
@@ -42,7 +46,6 @@ class Player(DefaultBase):
     __tablename__ = 'players'
 
     name = db.Column(db.String)
-    date_of_birth = db.Column(db.Date)
     
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
 
@@ -55,6 +58,7 @@ class Round(DefaultBase):
     date = db.Column(db.Date, server_default=db.func.current_date())
 
     course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
+    tournament_id = db.Column(db.Integer, db.ForeignKey('tournaments.id'))
 
     scorecards = db.relationship('Scorecard', backref='round')
     players = association_proxy('scorecards', 'player')
@@ -62,7 +66,6 @@ class Round(DefaultBase):
 class Scorecard(DefaultBase):
     __tablename__ = 'scorecards'
     
-    round_type = db.Column(db.String)
     score_1 = db.Column(db.Integer, default=-1)
     score_2 = db.Column(db.Integer, default=-1)
     score_3 = db.Column(db.Integer, default=-1)
@@ -82,7 +85,6 @@ class Scorecard(DefaultBase):
     score_17 = db.Column(db.Integer, default=-1)
     score_18 = db.Column(db.Integer, default=-1)
 
-    tournament_id = db.Column(db.Integer, db.ForeignKey('tournaments.id'))
     player_id = db.Column(db.Integer, db.ForeignKey('players.id'))
     round_id = db.Column(db.Integer, db.ForeignKey('rounds.id'))
 
@@ -113,6 +115,8 @@ class Course(DefaultBase):
     __tablename__ = 'courses'
 
     name = db.Column(db.String)
+    city = db.Column(db.String)
+    state = db.Column(db.String)
 
     holes = db.relationship('Hole', backref='course')
     rounds = db.relationship('Round', backref='course')
@@ -153,7 +157,7 @@ class Tournament(DefaultBase):
     event_name = db.Column(db.String)
     event_date = db.Column(db.Date)
     
-    scorecards = db.relationship('Scorecard', backref='tournament')
-    rounds = association_proxy('scorecards', 'round')
+    rounds = db.relationship('Round', backref='tournament')
+    scorecards = association_proxy('rounds', 'scorecard')
     players = association_proxy('scorecards', 'player')
 
