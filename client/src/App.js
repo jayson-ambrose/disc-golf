@@ -1,30 +1,72 @@
 import React, { useEffect, useState } from 'react'
 import './styles/App.css';
+import { Switch, Route } from "react-router-dom";
 import './components/Navbar'
 import Navbar from './components/Navbar';
 import GameTracker from './components/GameTracker'
 import Browse from './components/Browse'
 import Stats from './components/Stats'
-import Access from './components/Access'
+import Login from './components/Login'
+import CreateAccount from './components/CreateAccount'
 
 function App() {
 
   const [user, setUser] = useState(null);
 
+  useEffect(() => {
+    fetch('/check_session')
+    .then(resp => {
+      if (resp.ok){
+        resp.json().then(data => setUser(data))
+      }
+      else {
+        setUser(null)
+      }
+    })
+    
+  }, [])
+
   function handleLogin (user){
       setUser(user)}
 
+  let greeting
+  if (user) {
+    greeting = <h1>{user.username} is logged in.</h1>
+  }
+  else {
+    greeting = <h1>Log In</h1>
+  }
+
+  function handleLogout (user) {
+    fetch('/logout', {
+      method: 'DELETE'
+    }).then(() => setUser(null))
+  }
+
   return (
-    <div>
+    <div className='component'>
       <h1>Pocket Caddy</h1>
       <Navbar />
       <hr/>
-      {user ? (<p> hello {user.username}</p>): (<p>please log in</p>)}
-      <Access handleLogin={handleLogin}/>
+      {greeting}
+      {!user ? <Login handleLogin={handleLogin}/> : <button onClick={handleLogout}>Logout</button>}
       <hr/>
-      <GameTracker />
-      <Browse />
-      <Stats />
+      <Switch>
+        
+        <Route exact path='/GameTracker'>
+          <GameTracker />
+        </Route>
+        <Route exact path='/Browse'>
+          <Browse />
+        </Route>
+        <Route exact path='/Stats'>
+          <Stats />
+        </Route> 
+        <Route exact path='/CreateAccount'>
+          <CreateAccount handleLogin={handleLogin} />
+        </Route>  
+        
+      </Switch>
     </div>
   );
 }
