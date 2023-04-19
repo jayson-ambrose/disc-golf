@@ -202,9 +202,6 @@ class CheckSession(Resource):
         else:
             return {'message': '401: Not Authorized'}, 401
 
-api.add_resource(Users, '/users')
-api.add_resource(Login, '/login')
-api.add_resource(ClearSession, '/clear')
 api.add_resource(CheckSession, '/check_session')
 
 
