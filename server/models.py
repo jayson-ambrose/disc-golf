@@ -41,7 +41,7 @@ class Player(DefaultBase):
     __tablename__ = 'players'
 
     name = db.Column(db.String)
-    date_of_birth = db.Column(db.Date)
+    # date_of_birth = db.Column(db.Date)
     
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
 
@@ -63,7 +63,6 @@ class Round(DefaultBase):
 class Scorecard(DefaultBase):
     __tablename__ = 'scorecards'
     
-    round_type = db.Column(db.String)
     score_1 = db.Column(db.Integer, default=-1)
     score_2 = db.Column(db.Integer, default=-1)
     score_3 = db.Column(db.Integer, default=-1)

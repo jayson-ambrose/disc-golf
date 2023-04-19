@@ -2,8 +2,8 @@ import React from 'react'
 
 function Stats() {
   return (
-    <div>
-      <h1>STATS</h1>
+    <div className='component'>
+      <h1>Stats</h1>
     </div>
   );
 }

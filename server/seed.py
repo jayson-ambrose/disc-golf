@@ -15,8 +15,6 @@ if __name__ == '__main__':
     with app.app_context():
         print("Starting seed...")
 
-        user1 = User(username= 'taco', password= 'password')
-        db.session.add(user1)
-        db.session.commit()
+        
         
         # Seed code goes here!
