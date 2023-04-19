@@ -120,7 +120,7 @@ class Rounds(Resource):
         scorelist = []
         
         for player in req['players']:
-            player = Player.query.filter(Player.name == player).first()
+            player = Player.query.filter(Player.name == player).where(Player.user_id == session['user_id']).first()
             if not player:
                 player = Player(name=player.name, user_id=User.query.filter(User.id == session.get('user_id')).first())
                 playerlist.append(player)
