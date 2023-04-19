@@ -74,7 +74,7 @@ class UserById(Resource):
         return make_response(res.to_dict(), 200)
     def delete(self, id):
         user = User.query.filter(User.id == id).first()
-        if user == session.user:
+        if user.id == session.get('user_id'):
             db.session.delete(user)
             db.session.commit()
             return make_response('', 204)
@@ -89,11 +89,11 @@ class Rounds(Resource):
         return make_response(round_list, 200)
     def post(self):
         req = request.get_json()
-        r = Round(course=req.course, tournament=req.tournament, date={req.date if req.date else db.func.current_date()})
+        r = Round(course=req.course, tournament=req.tournament)
         playerlist = []
         scorelist = []
-        for player in req.players:
-            player = Player.query.filter(Player.name == player.name).first()
+        for player in req['players']:
+            player = Player.query.filter(Player.name == player).where(Player.user_id == session['user_id']).first()
             if not player:
                 player = Player(name=player.name, user=session.user)
             playerlist.append(player)
@@ -101,7 +101,7 @@ class Rounds(Resource):
             new_score = Scorecard(player=player, round=r)
             scorelist.append(new_score)
         try:
-            db.session.add_all([r, playerlist, scorelist])
+            db.session.add_all([r, *playerlist, *scorelist])
             db.session.commit()
         except:
             db.session.rollback()
