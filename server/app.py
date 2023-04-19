@@ -26,6 +26,28 @@ class Logout(Resource):
 
 api.add_resource(Logout, '/logout')
 
+class Users(Resource):
+    def get(self):
+        users = [user.to_dict() for user in User.query.all()]
+        return make_response(users, 200)
+    
+    def post(self):
+        req = request.get_json()
+
+        if req['password'] != req['re_password']:
+            return make_response({'error':'401: passwords do not match.'}, 401)
+        
+        u = User(username=req.get('username'), password=req.get('password'))
+
+        try:
+            db.session.add(u)
+            db.session.commit()
+            return make_response(u.to_dict(), 201)
+        
+        except IntegrityError:
+            session.rollback()
+            return make_response({'error': 'error 400: Username already taken!'}, 400)
+
 class Login(Resource):
 
     def post(self):
@@ -173,6 +195,9 @@ class CheckSession(Resource):
         else:
             return {'message': '401: Not Authorized'}, 401
 
+api.add_resource(Users, '/users')
+api.add_resource(Login, '/login')
+api.add_resource(ClearSession, '/clear')
 api.add_resource(CheckSession, '/check_session')
 
 
