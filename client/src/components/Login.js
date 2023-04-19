@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { FormikContext, useFormik } from 'formik'
 import * as yup from 'yup'
 
-function Access({ handleLogin }) {
+function Login({ handleLogin }) {
 
   // useEffect(() => {
   //   fetch('http://127.0.0.1:5555/users')
@@ -14,40 +14,49 @@ function Access({ handleLogin }) {
   // }, [])
 
   const formSchema = yup.object().shape({
-    username: yup.string().required("Must enter username").max(15).min(5)
+    username: yup.string().required("Must enter username").max(15).min(4),
+    password: yup.string().required("Must enter password").max(30).min(6)
   })
   
   const formik = useFormik({
     initialValues: {
-      username: ""
+      username: "",
+      password: ""
     },
 
     validationSchema: formSchema,
 
     onSubmit: (values) => {
-      fetch('http://127.0.0.1:5555/login', {
+      fetch('/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(values)
-      }).then(resp => resp.json())
-      .then(data => {
-        data ? handleLogin(data) : handleLogin(null)
-      })
+      }).then(resp => {
+        if (resp.ok){
+        resp.json().then(data=> handleLogin(data))
+
+      }})
     }
   })
 
   return (
     <div>      
       <form onSubmit={formik.handleSubmit}>
-
           <label>Username</label><br/>
           <input 
             type='text'
             name='username'
             onChange={formik.handleChange}
             value={formik.values.username}
+            /><br/>
+          <label>Password</label><br/>
+          <input 
+            type='password'
+            name='password'
+            onChange={formik.handleChange}
+            value={formik.values.password}
             /><br/>
           <button type='submit'>Login</button>
       </form>
@@ -56,4 +65,4 @@ function Access({ handleLogin }) {
 
 }
 
-export default Access;
+export default Login;

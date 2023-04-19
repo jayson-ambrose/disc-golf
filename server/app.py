@@ -6,6 +6,7 @@
 from flask import request, make_response, session
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError
 
 # Local imports
 from config import app, db, api
@@ -15,18 +16,26 @@ app.secret_key = "aggabadvffa"
 
 # Views go here!
 
-class ClearSession(Resource):
+class Logout(Resource):
     def get(self):
         session['user_id'] = None
-
+        return {}, 204
+    
+    def delete(self):
+        session['user_id'] = None
         return {}, 204
 
 class Users(Resource):
     def get(self):
         users = [user.to_dict() for user in User.query.all()]
         return make_response(users, 200)
+    
     def post(self):
         req = request.get_json()
+
+        if req['password'] != req['re_password']:
+            return make_response({'error':'401: passwords do not match.'}, 401)
+        
         u = User(username=req.get('username'), password=req.get('password'))
         try:
             db.session.add(u)
@@ -102,12 +111,12 @@ class Login(Resource):
     def post(self):
         req_data = request.get_json()
         user = User.query.filter(User.username == req_data['username']).first()
+
+        if user.auth(req_data['password']) == False:
+            print ('wrong password')
         
-        try:
-            
+        try:            
             session['user_id'] = user.id
-            print(session['user_id'])
-            print(user.id)
             return make_response(user.to_dict(), 200)
         
         except:
@@ -125,7 +134,7 @@ class CheckSession(Resource):
 
 api.add_resource(Users, '/users')
 api.add_resource(Login, '/login')
-api.add_resource(ClearSession, '/clear')
+api.add_resource(Logout, '/logout')
 api.add_resource(CheckSession, '/check_session')
 api.add_resource(Rounds, '/rounds')
 api.add_resource(RoundById, '/rounds/<int:id>')

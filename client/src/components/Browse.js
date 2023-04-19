@@ -2,8 +2,8 @@ import React from 'react'
 
 function Browse() {
   return (
-    <div>
-      <h1>BROWSE</h1>
+    <div className='component'>
+      <h1>Browse</h1>
     </div>
   );
 }
