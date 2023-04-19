@@ -9,7 +9,7 @@ from faker import Faker
 
 # Local imports
 from app import app
-from models import db, User, Tournament, Hole, Course, Player
+from models import db, User, Tournament, Hole, Course, Player, Round
 
 if __name__ == '__main__':
     fake = Faker()
@@ -21,13 +21,20 @@ if __name__ == '__main__':
         Hole.query.delete()
         Course.query.delete()
         Player.query.delete()
+        Round.query.delete()
         
         print("Starting seed...")
+
+        print('Adding generic tournament...')
+
+        t1 = Tournament(event_name = 'Casual Round', event_date = db.func.now())
+        db.session.add(t1)
+        db.session.commit()
 
         print('generating Users...')
 
         for u in range(15):
-            user = User(username = fake.first_name(), password='password')
+            user = User(username = fake.unique.first_name(), password='password')
             db.session.add(user)
             db.session.commit()
 

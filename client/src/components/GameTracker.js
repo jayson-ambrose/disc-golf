@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import NewGameForm from './NewGameForm'
 
 function GameTracker() {
 
@@ -12,51 +13,8 @@ function GameTracker() {
 
     ])
 
-    function getPlayers () {
-
-        fetch(`/rounds/${id}/players`)
-        .then(resp => resp.json())
-        .then(data => setPlayers(...players , [
-            {id1: data.player1.id},
-            {id2: data.player2.id},
-            {id3: data.player3.id},
-            {id4: data.player4.id}
-        ]))
-    }
-
     const startNewGameForm = (
-        <div>
-            <h1>Start a New Round</h1>
-            <form>                
-                <table>
-                    <tr>
-                        <td><label>Course ID</label></td>
-                        <td><input type='text' name='course_id'></input></td>
-                    </tr>                
-                    <tr>
-                        <td><label>Tournamnet ID</label></td>
-                        <td><input type='text' name='tournament_id'></input></td>
-                    </tr>                
-                    <tr>
-                        <td><label>Player 1 Name</label></td>
-                        <td><input type='text' name='p1_name'></input></td>
-                    </tr>  
-                    <tr>
-                        <td><label>Player 2 Name</label></td>
-                        <td><input type='text' name='p2_name'></input></td>
-                    </tr>  
-                    <tr>
-                        <td><label>Player 3 Name</label></td>
-                        <td><input type='text' name='p3_name'></input></td>
-                    </tr>  
-                    <tr>
-                        <td><label>Player 4 Name</label></td>
-                        <td><input type='text' name='p4_name'></input></td>
-                    </tr>  
-                </table><br/>
-            <button type='submit'>Start Round</button> 
-            </form><br/>
-        </div>
+        <NewGameForm />
     )
 
     const gameProcess = (

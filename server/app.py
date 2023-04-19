@@ -106,19 +106,26 @@ class UserById(Resource):
 api.add_resource(UserById, '/users/<int:id>')
         
 class Rounds(Resource):
+
     def get(self):
         round_list = [r.to_dict() for r in Round.query.all()]
         return make_response(round_list, 200)
+    
     def post(self):
         req = request.get_json()
-        r = Round(course=req.course, tournament=req.tournament)
+        print (req)
+        r = Round(course_id=req['course'], tournament_id=req['tournament'])
+
         playerlist = []
         scorelist = []
+        
         for player in req['players']:
-            player = Player.query.filter(Player.name == player).where(Player.user_id == session['user_id']).first()
+            player = Player.query.filter(Player.name == player).first()
             if not player:
-                player = Player(name=player.name, user=session.user)
-            playerlist.append(player)
+                player = Player(name=player.name, user_id=User.query.filter(User.id == session.get('user_id')).first())
+                playerlist.append(player)
+                new_score = player.addScorecard()
+            
         for player in playerlist:
             new_score = Scorecard(player=player, round=r)
             scorelist.append(new_score)

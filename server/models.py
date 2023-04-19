@@ -28,7 +28,7 @@ class User(DefaultBase):
 
     players = db.relationship('Player', backref='user')
 
-    serialize_rules = ('-_password', '-password')
+    serialize_rules = ('-_password', '-password', '-players.user')
 
     @hybrid_property
     def password(self):
@@ -51,6 +51,15 @@ class Player(DefaultBase):
 
     scorecards = db.relationship('Scorecard', backref='player')
     rounds = association_proxy('scorecards', 'round')
+
+    def newScorecard (self, round_id):
+        scorecard = Scorecard(self.id, round_id)
+        try:
+            db.session.add(scorecard)
+            db.session.commit()
+            return(scorecard) 
+        except: print("hello")
+
 
 class Round(DefaultBase):
     __tablename__ = 'rounds'
@@ -160,10 +169,10 @@ class Hole(DefaultBase):
     def validate_number(self, key, hole_number):
         if type(hole_number) is not int:
             raise TypeError('Hole number must be an integer.')
-        course_holes = self.course.holes
-        course_hole_nums = map(lambda obj: obj.hole_number, course_holes)
-        if hole_number in course_hole_nums:
-            raise ValueError('This course already has a hole with this number.')
+        # course_holes = self.course.holes
+        # course_hole_nums = map(lambda obj: obj.hole_number, course_holes)
+        # if hole_number in course_hole_nums:
+        #     raise ValueError('This course already has a hole with this number.')
         elif hole_number < 1 or hole_number > 18:
             raise ValueError('Hole number must be between 1 and 18')
         else:
