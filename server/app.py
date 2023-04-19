@@ -91,19 +91,31 @@ class ScorecardByRoundId(Resource):
     
     def patch(self, id):
         score_list = Scorecard.query.filter(Scorecard.round_id == id).all()
+        req = request.get_json()
+        for score in score_list:
+            for player in req.players:
+                if player.id == score.player_id:
+                    score.set_score_from_hole(req.hole, player.score)
+        db.session.commit()
+        res = {'hole': req.hole,
+                'players': list(map(lambda s: {'id': s.player_id, 'score': s.get_score_from_hole(req.hole)}))
+            }
+        return make_response(res, 200)
 
 
 
-{'holeid': int(),
- 'players': {
-    'player1': {'id': 1, 'score': 2},
-    'player2': {'id': 2, 'score': 4},
-    'player3': {'id': 3, 'score': 3}
- }}
+# {'hole': int(),
+#  'players': [
+#     {'id': 1, 'score': 2},
+#     {'id': 2, 'score': 4},
+#     {'id': 3, 'score': 3}
+#  ]}
 
 class PlayerByRoundId(Resource):
     def get(self, id):
-        player_list = Player.rounds.query.filter.all()
+        player_list = Player.query.where(Player.rounds.any(Round.id == id))
+        res = {'players': list(map(lambda p: {'id': p.id, 'name':p.name}, player_list))}
+        return make_response(res, 200)
         
 class Login(Resource):
 
