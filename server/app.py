@@ -24,6 +24,26 @@ class Logout(Resource):
         session['user_id'] = None
         return {}, 204
 
+api.add_resource(Logout, '/logout')
+
+class Login(Resource):
+
+    def post(self):
+        req_data = request.get_json()
+        user = User.query.filter(User.username == req_data['username']).first()
+
+        if user.auth(req_data['password']) == False:
+            print ('wrong password')
+        
+        try:            
+            session['user_id'] = user.id
+            return make_response(user.to_dict(), 200)
+        
+        except:
+            return make_response( {'error': '404 user not found'}, 404)
+        
+api.add_resource(Login, '/login')
+
 class Users(Resource):
     def get(self):
         users = [user.to_dict() for user in User.query.all()]
@@ -43,6 +63,25 @@ class Users(Resource):
         except IntegrityError:
             session.rollback()
             return make_response({'error': 'error 400: Username already taken!'}, 400)
+        
+api.add_resource(Users, '/users')
+
+class UserById(Resource):
+    def get(self, id):
+        res = User.query.filter(User.id == id).first()
+        if not res:
+            return make_response({'error': 'error 404 User not found.'}, 404)
+        return make_response(res.to_dict(), 200)
+    def delete(self, id):
+        user = User.query.filter(User.id == id).first()
+        if user == session.user:
+            db.session.delete(user)
+            db.session.commit()
+            return make_response('', 204)
+        else:
+            return make_response({'error': 'error 401 Unauthorized.'}, 401)
+        
+api.add_resource(UserById, '/users/<int:id>')
         
 class Rounds(Resource):
     def get(self):
@@ -69,6 +108,8 @@ class Rounds(Resource):
             return make_response({'error': 'error 400: Unable to create new game.'}, 400)
         return make_response({'round': r.to_dict(only=('id', 'date', 'course_id', 'tournament_id'))}, 201)
 
+api.add_resource(Rounds, '/rounds')
+
 class RoundById(Resource):
     def get(self, id):
         r = Round.query.filter(Round.id == id).first()
@@ -84,6 +125,8 @@ class RoundById(Resource):
         db.session.commit()
         return make_response('', 204)
     
+api.add_resource(RoundById, '/rounds/<int:id>')
+
 class ScorecardByRoundId(Resource):
     def get(self, id):
         score_list = Scorecard.query.filter(Scorecard.round_id == id).all()
@@ -102,7 +145,7 @@ class ScorecardByRoundId(Resource):
             }
         return make_response(res, 200)
 
-
+api.add_resource(ScorecardByRoundId,'/rounds/<int:id>/scorecards')\
 
 # {'hole': int(),
 #  'players': [
@@ -117,22 +160,9 @@ class PlayerByRoundId(Resource):
         res = {'players': list(map(lambda p: {'id': p.id, 'name':p.name}, player_list))}
         return make_response(res, 200)
         
-class Login(Resource):
+api.add_resource(PlayerByRoundId, '/rounds/<int:id>/players')
 
-    def post(self):
-        req_data = request.get_json()
-        user = User.query.filter(User.username == req_data['username']).first()
 
-        if user.auth(req_data['password']) == False:
-            print ('wrong password')
-        
-        try:            
-            session['user_id'] = user.id
-            return make_response(user.to_dict(), 200)
-        
-        except:
-            return make_response( {'error': '404 user not found'}, 404)
-        
 class CheckSession(Resource):    
 
     def get(self):
@@ -143,13 +173,7 @@ class CheckSession(Resource):
         else:
             return {'message': '401: Not Authorized'}, 401
 
-api.add_resource(Users, '/users')
-api.add_resource(Login, '/login')
-api.add_resource(Logout, '/logout')
 api.add_resource(CheckSession, '/check_session')
-api.add_resource(Rounds, '/rounds')
-api.add_resource(RoundById, '/rounds/<int:id>')
-api.add_resource(ScorecardByRoundId,'/rounds/<int:id>/scorecards')
 
 
 if __name__ == '__main__':
