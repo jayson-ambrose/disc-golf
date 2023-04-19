@@ -46,24 +46,34 @@ class Users(Resource):
             return make_response({'error': 'error 400: Username already taken!'}, 400)
         
 class Rounds(Resource):
+
     def get(self):
         round_list = [r.to_dict() for r in Round.query.all()]
         return make_response(round_list, 200)
+    
     def post(self):
         req = request.get_json()
-        r = Round(course=req.course, tournament=req.tournament, date={req.date if req.date else db.func.current_date()})
+        print (req)
+        r = Round(course_id=req['course'], tournament_id=req['tournament'])
+
         playerlist = []
         scorelist = []
-        for player in req.players:
-            player = Player.query.filter(Player.name == player.name).first()
+        
+        for player in req['players']:
+            player = Player.query.filter(Player.name == player).first()
             if not player:
-                player = Player(name=player.name, user=session.user)
-            playerlist.append(player)
+                player = Player(name=player.name, user_id=User.query.filter(User.id == session.get('user_id')).first())
+                playerlist.append(player)
+                new_score = player.addScorecard()
+            
         for player in playerlist:
             new_score = Scorecard(player=player, round=r)
             scorelist.append(new_score)
         try:
-            db.session.add_all([r, playerlist, scorelist])
+            db.session.add_all([r, scorelist, playerlist])
+            for player in playerlist:
+                db.session.add(player)
+            
             db.session.commit()
         except:
             db.session.rollback()
@@ -93,14 +103,12 @@ class ScorecardByRoundId(Resource):
     def patch(self, id):
         score_list = Scorecard.query.filter(Scorecard.round_id == id).all()
 
-
-
-{'holeid': int(),
- 'players': {
-    'player1': {'id': 1, 'score': 2},
-    'player2': {'id': 2, 'score': 4},
-    'player3': {'id': 3, 'score': 3}
- }}
+# {'holeid': int(),
+#  'players': {
+#     'player1': {'id': 1, 'score': 2},
+#     'player2': {'id': 2, 'score': 4},
+#     'player3': {'id': 3, 'score': 3}
+#  }}
 
 class PlayerByRoundId(Resource):
     def get(self, id):
