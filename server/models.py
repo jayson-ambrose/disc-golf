@@ -15,7 +15,7 @@ class DefaultBase(db.Model, SerializerMixin):
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
-    serialize_rules = ('-children.children',)
+    serialize_rules = ('-children.children', '-created_at', '-updated_at')
 
     def __repr__(self):
         return f'<Instance of {self.__class__.__name__}, ID {self.id}>'
