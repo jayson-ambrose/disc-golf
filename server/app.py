@@ -83,6 +83,11 @@ class UserById(Resource):
         else:
             return make_response({'error': 'error 401 Unauthorized.'}, 401)
         
+    def patch(self, id, new_pass):
+        res = User.query.filter(User.id == id).first()
+        res.password = new_pass
+        return make_response(res.to_dict(only='username',), 204)
+        
 api.add_resource(UserById, '/users/<int:id>')
         
 class Rounds(Resource):
