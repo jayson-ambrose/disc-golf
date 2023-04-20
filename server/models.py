@@ -15,7 +15,7 @@ class DefaultBase(db.Model, SerializerMixin):
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
-    serialize_rules = ('-children.children', '-created_at', '-updated_at')
+    serialize_rules = ('-created_at', '-updated_at')
 
     def __repr__(self):
         return f'<Instance of {self.__class__.__name__}, ID {self.id}>'
@@ -27,8 +27,9 @@ class User(DefaultBase):
     _password = db.Column(db.String, nullable=False)
 
     players = db.relationship('Player', backref='user')
+    rounds = db.relationship('Round', backref='user')
 
-    serialize_rules = ('-_password', '-password', '-players.user')
+    serialize_rules = ('-_password', '-password', '-players','-created_at', '-updated_at')
 
     @hybrid_property
     def password(self):
@@ -68,6 +69,7 @@ class Round(DefaultBase):
 
     course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
     tournament_id = db.Column(db.Integer, db.ForeignKey('tournaments.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     scorecards = db.relationship('Scorecard', backref='round')
     players = association_proxy('scorecards', 'player')
