@@ -89,6 +89,13 @@ class UserById(Resource):
         return make_response(res.to_dict(only='username',), 204)
         
 api.add_resource(UserById, '/users/<int:id>')
+
+class RoundsByUserId(Resource):
+    def get(self, id):
+        round_list = Round.query.filter(Round.user_id == id).all()
+        return make_response(list(map(lambda x: x.to_dict(only=('date', 'user.username', 'course.name', 'players.name')), round_list)), 200)
+    
+api.add_resource(RoundsByUserId, '/users/<int:id>/rounds')
         
 class Rounds(Resource):
 
@@ -97,14 +104,14 @@ class Rounds(Resource):
         return make_response(round_list, 200)
     
     def post(self):
+        session['user_id'] = 1
         req = request.get_json()
-        r = Round(course_id=req['course_id'], tournament_id=req['tournament_id'], date=date.today())
+        r = Round(course_id=req['course_id'], tournament_id=req['tournament_id'], user_id=session['user_id'])
         db.session.add(r)
         db.session.flush()
 
         playerlist = []
         scorelist = []
-        session['user_id'] = 1
         
         for player in req['players']:
             p = Player.query.filter(Player.name == player).where(Player.user_id == session.get('user_id')).first()
