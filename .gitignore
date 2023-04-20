@@ -52,3 +52,5 @@ jspm_packages
 
 /server/__pycache__
 /server/instance
+
+*.pyc
