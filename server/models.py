@@ -28,7 +28,7 @@ class User(DefaultBase):
 
     players = db.relationship('Player', backref='user')
 
-    serialize_rules = ('-_password', '-password', '-players.user')
+    serialize_rules = ('-_password', '-password', '-players')
 
     @hybrid_property
     def password(self):
