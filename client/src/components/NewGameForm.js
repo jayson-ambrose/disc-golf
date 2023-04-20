@@ -40,19 +40,19 @@ function NewGameForm() {
             }
         })
 
-        fetch('/users', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(post_values)
-          }).then(resp => {
-            if (resp.ok){
-            resp.json().then(data=> console.log(data))
+        // fetch('/rounds', {
+        //     method: 'POST',
+        //     headers: {
+        //       'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify(post_values)
+        //   }).then(resp => {
+        //     if (resp.ok){
+        //     resp.json().then(data=> console.log(data))
     
-          }})
+        //   }})
 
-        console.log(post_values)
+        // console.log(post_values)
         //post request will go here to try generating a scorecard for each player.
 
     }})
