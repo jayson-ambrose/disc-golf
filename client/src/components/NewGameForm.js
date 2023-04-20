@@ -55,9 +55,7 @@ function NewGameForm({handleGameOn}) {
             if (resp.ok){
             resp.json().then(data=> console.log(data))    
           }})
-
-        //post request will go here to try generating a scorecard for each player.
-
+          
     }})
 
     return (
