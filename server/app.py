@@ -194,8 +194,6 @@ class PlayerByRoundId(Resource):
         print(player_list)
         res = {'players': list(map(lambda p: p.to_dict(only=('name', 'id')), player_list))}
         return make_response(res, 200)
-        
-api.add_resource(PlayerByRoundId, '/rounds/<int:id>/players')
 
     def post(self):
         req_data = request.get_json()
@@ -210,7 +208,9 @@ api.add_resource(PlayerByRoundId, '/rounds/<int:id>/players')
         
         except:
             return make_response( {'error': '404 user not found'}, 404)
-            
+        
+api.add_resource(PlayerByRoundId, '/rounds/<int:id>/players')  
+
 class CheckSession(Resource):    
 
     def get(self):
