@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import NewGameForm from './NewGameForm'
+import ScoreSheet from './ScoreSheet'
 
 function GameTracker() {
 
@@ -31,17 +32,7 @@ function GameTracker() {
     return(
         <div className='component'>
             {startNewGameForm}
-            <table>
-                <tr>
-                    <th>HL</th>
-                    <th>PAR</th>
-                    <th>DIST</th>
-                    <th>P1</th>
-                    <th>P2</th>
-                    <th>P3</th>
-                    <th>P4</th>
-                </tr>
-            </table>
+            <ScoreSheet />
         </div>
     )
 }
