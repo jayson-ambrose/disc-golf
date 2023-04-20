@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 # Standard library imports
+from datetime import date
 
 # Remote library imports
 from flask import request, make_response, session
@@ -114,24 +115,26 @@ class Rounds(Resource):
     
     def post(self):
         req = request.get_json()
-        print (req)
-        r = Round(course_id=req['course'], tournament_id=req['tournament'])
+        r = Round(course_id=req['course_id'], tournament_id=req['tournament_id'], date=date.today())
+        db.session.add(r)
+        db.session.flush()
 
         playerlist = []
         scorelist = []
+        session['user_id'] = 1
         
         for player in req['players']:
-            player = Player.query.filter(Player.name == player).where(Player.user_id == session['user_id']).first()
-            if not player:
-                player = Player(name=player.name, user_id=User.query.filter(User.id == session.get('user_id')).first())
-                playerlist.append(player)
-                new_score = player.addScorecard()
+            p = Player.query.filter(Player.name == player).where(Player.user_id == session.get('user_id')).first()
+            if not p:
+                p = Player(name=player, user_id=session.get('user_id'))
+                db.session.add(p)
+            playerlist.append(p)
             
         for player in playerlist:
             new_score = Scorecard(player=player, round=r)
+            db.session.add(new_score)
             scorelist.append(new_score)
         try:
-            db.session.add_all([r, *playerlist, *scorelist])
             db.session.commit()
         except:
             db.session.rollback()
@@ -157,25 +160,26 @@ class RoundById(Resource):
     
 api.add_resource(RoundById, '/rounds/<int:id>')
 
-class ScorecardByRoundId(Resource):
+class ScorecardsByRoundId(Resource):
     def get(self, id):
         score_list = Scorecard.query.filter(Scorecard.round_id == id).all()
-        return make_response(list(map(lambda score: score.to_dict(rules=('-children',)), score_list)), 200)
+        return make_response(list(map(lambda score: score.to_dict(rules=('-player','-round')), score_list)), 200)
     
     def patch(self, id):
         score_list = Scorecard.query.filter(Scorecard.round_id == id).all()
         req = request.get_json()
         for score in score_list:
-            for player in req.players:
-                if player.id == score.player_id:
-                    score.set_score_from_hole(req.hole, player.score)
+            for player in req['players']:
+                p = Player.query.filter(Player.id == player.id)
+                if p.id == score.player_id:
+                    score.set_score_from_hole(req['hole'], player.score)
         db.session.commit()
-        res = {'hole': req.hole,
-                'players': list(map(lambda s: {'id': s.player_id, 'score': s.get_score_from_hole(req.hole)}))
+        res = {'hole': req['hole_id'],
+                'players': list(map(lambda s: {'id': s.player_id, 'score': s.get_score_from_hole(req['hole'])}, score_list))
             }
         return make_response(res, 200)
 
-api.add_resource(ScorecardByRoundId,'/rounds/<int:id>/scorecards')\
+api.add_resource(ScorecardsByRoundId,'/rounds/<int:id>/scorecards')\
 
 # {'hole': int(),
 #  'players': [
@@ -186,8 +190,9 @@ api.add_resource(ScorecardByRoundId,'/rounds/<int:id>/scorecards')\
 
 class PlayerByRoundId(Resource):
     def get(self, id):
-        player_list = Player.query.where(Player.rounds.any(Round.id == id))
-        res = {'players': list(map(lambda p: {'id': p.id, 'name':p.name}, player_list))}
+        player_list = Player.query.filter(Player.rounds.any(Round.id == id)).all()
+        print(player_list)
+        res = {'players': list(map(lambda p: p.to_dict(only=('name', 'id')), player_list))}
         return make_response(res, 200)
         
 api.add_resource(PlayerByRoundId, '/rounds/<int:id>/players')
