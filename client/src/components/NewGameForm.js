@@ -2,7 +2,7 @@ import React from 'react'
 import { FormikContext, useFormik } from 'formik'
 import * as yup from 'yup'
 
-function NewGameForm() {
+function NewGameForm({handleGameOn}) {
 
     const formSchema = yup.object().shape({
         course_id: yup.number().required("Must enter a course ID."),
@@ -40,19 +40,22 @@ function NewGameForm() {
             }
         })
 
-        // fetch('/rounds', {
-        //     method: 'POST',
-        //     headers: {
-        //       'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(post_values)
-        //   }).then(resp => {
-        //     if (resp.ok){
-        //     resp.json().then(data=> console.log(data))
-    
-        //   }})
+        handleGameOn()
 
-        // console.log(post_values)
+        console.log('game on!')
+        console.log(post_values)
+
+        fetch('/rounds', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(post_values)
+          }).then(resp => {
+            if (resp.ok){
+            resp.json().then(data=> console.log(data))    
+          }})
+
         //post request will go here to try generating a scorecard for each player.
 
     }})
@@ -62,54 +65,56 @@ function NewGameForm() {
             <h1>Start a New Round</h1>
             <form onSubmit={formik.handleSubmit}>                
                 <table>
-                    <tr>
-                        <td><label>Course ID</label></td>
-                        <td><input
-                            type='text'
-                            name='course_id'
-                            onChange={formik.handleChange}/>
-                        </td>
-                    </tr>                
-                    <tr>
-                        <td><label>Tournamnet ID</label></td>
-                        <td><input
-                            type='text'
-                            name='tournament_id'
-                            onChange={formik.handleChange}/>
-                        </td>
-                    </tr>                
-                    <tr>
-                        <td><label>Player 1 Name</label></td>
-                        <td><input
-                            type='text'
-                            name='player_1'
-                            onChange={formik.handleChange}/>
-                        </td>
-                    </tr>  
-                    <tr>
-                        <td><label>Player 2 Name</label></td>
-                        <td><input
-                            type='text'
-                            name='player_2'
-                            onChange={formik.handleChange}/>
-                        </td>
-                    </tr>  
-                    <tr>
-                        <td><label>Player 3 Name</label></td>
-                        <td><input
-                            type='text'
-                            name='player_3'
-                            onChange={formik.handleChange}/>
-                        </td>
-                    </tr>  
-                    <tr>
-                        <td><label>Player 4 Name</label></td>
-                        <td><input
-                            type='text'
-                            name='player_4'
-                            onChange={formik.handleChange}/>
-                        </td>
-                    </tr>  
+                    <tbody>
+                        <tr>
+                            <td><label>Course ID</label></td>
+                            <td><input
+                                type='text'
+                                name='course_id'
+                                onChange={formik.handleChange}/>
+                            </td>
+                        </tr>                
+                        <tr>
+                            <td><label>Tournamnet ID</label></td>
+                            <td><input
+                                type='text'
+                                name='tournament_id'
+                                onChange={formik.handleChange}/>
+                            </td>
+                        </tr>                
+                        <tr>
+                            <td><label>Player 1 Name</label></td>
+                            <td><input
+                                type='text'
+                                name='player_1'
+                                onChange={formik.handleChange}/>
+                            </td>
+                        </tr>  
+                        <tr>
+                            <td><label>Player 2 Name</label></td>
+                            <td><input
+                                type='text'
+                                name='player_2'
+                                onChange={formik.handleChange}/>
+                            </td>
+                        </tr>  
+                        <tr>
+                            <td><label>Player 3 Name</label></td>
+                            <td><input
+                                type='text'
+                                name='player_3'
+                                onChange={formik.handleChange}/>
+                            </td>
+                        </tr>  
+                        <tr>
+                            <td><label>Player 4 Name</label></td>
+                            <td><input
+                                type='text'
+                                name='player_4'
+                                onChange={formik.handleChange}/>
+                            </td>
+                        </tr>
+                    </tbody>  
                 </table><br/>
             <button type='submit'>Start Round</button> 
             </form><br/>
