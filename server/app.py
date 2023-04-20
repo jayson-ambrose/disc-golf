@@ -141,7 +141,7 @@ api.add_resource(RoundById, '/rounds/<int:id>')
 class ScorecardsByRoundId(Resource):
     def get(self, id):
         score_list = Scorecard.query.filter(Scorecard.round_id == id).all()
-        return make_response(list(map(lambda score: score.to_dict(rules=('-player','-round')), score_list)), 200)
+        return make_response(list(set(map(lambda score: score.to_dict(rules=('-player','-round')), score_list))), 200)
     
     def patch(self, id):
         score_list = Scorecard.query.filter(Scorecard.round_id == id).all()
@@ -156,7 +156,7 @@ class ScorecardsByRoundId(Resource):
         db.session.flush()
         print(score_list)
         res = {'hole': req['hole'],
-                'players': list(map(lambda s: {'id': s.player_id, 'score': s.get_score_from_hole(req['hole'])}, score_list))
+                'players': list(set(map(lambda s: {'id': s.player_id, 'score': s.get_score_from_hole(req['hole'])}, score_list)))
             }
         return make_response(res, 200)
 
