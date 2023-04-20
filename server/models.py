@@ -26,10 +26,10 @@ class User(DefaultBase):
     username = db.Column(db.String, unique=True)
     _password = db.Column(db.String, nullable=False)
 
-    players = db.relationship('Player', backref='user')
-    rounds = db.relationship('Round', backref='user')
+    players = db.relationship('Player', backref='user', cascade='all, delete-orphan')
+    rounds = db.relationship('Round', backref='user', cascade='all, delete-orphan')
 
-    serialize_rules = ('-_password', '-password', '-players','-created_at', '-updated_at')
+    serialize_rules = ('-_password', '-password', '-players','-created_at', '-updated_at', '-rounds')
 
     @hybrid_property
     def password(self):
@@ -71,8 +71,10 @@ class Round(DefaultBase):
     tournament_id = db.Column(db.Integer, db.ForeignKey('tournaments.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    scorecards = db.relationship('Scorecard', backref='round')
+    scorecards = db.relationship('Scorecard', backref='round', cascade='all, delete-orphan')
     players = association_proxy('scorecards', 'player')
+
+    serialize_rules = ('-created_at', '-updated_at', '-scorecards', '-players')
 
 class Scorecard(DefaultBase):
     __tablename__ = 'scorecards'
@@ -153,7 +155,7 @@ class Course(DefaultBase):
     city = db.Column(db.String)
     state = db.Column(db.String)
 
-    holes = db.relationship('Hole', backref='course')
+    holes = db.relationship('Hole', backref='course', cascade='all, delete-orphan')
     rounds = db.relationship('Round', backref='course')
     
     def num_holes(self):
