@@ -5,20 +5,30 @@ import ScoreEntry from './ScoreEntry'
 
 function GameTracker() {
 
-    const [gameOn, setGameOn] = useState(true) //set back to false for production
-    const [playerList, setPlayerList] = useState(['jayson', 'eric'])    
+    const [gameOn, setGameOn] = useState(false) //set back to false for production
+    const [playerList, setPlayerList] = useState([])    
     const [roundId, setRoundId] = useState(0)
+    const [courseId, setCourseId] = useState(0)
 
-    const [players, setPlayers] = useState([
-       { id1: '' },
-       { id2: '' },
-       { id3: '' },
-       { id4: '' }
-    ])
+    function getPlayersByRoundId (id) {
+        fetch(`/rounds/${id}/players`)
+        .then(resp => resp.json())
+        .then(data => {
+            const playerArray = []
+            data.players.forEach((player) => {
+                playerArray.push(player)
+            })
+            setPlayerList(playerArray)            
+        })
+    }
 
-    function handleGameOn () {
-        //retrieve player list by round id
+    function handleGameOn (roundData) {
+
         setGameOn(true)
+        setRoundId(roundData.round.id)
+        setCourseId(roundData.round.course_id)
+        getPlayersByRoundId(roundData.round.id)
+
     }
 
     function handleEndGame () {
@@ -28,8 +38,8 @@ function GameTracker() {
 
     return(
         <div className='component'>
-            {gameOn ? <ScoreEntry playerList={playerList} handleEndGame={handleEndGame}/> : <NewGameForm gameOn={gameOn} handleGameOn={handleGameOn}/>}            
-            {gameOn ? <ScoreSheet playerList={playerList} roundId={roundId}/> : null} 
+            {gameOn ? <ScoreEntry playerList={playerList} handleEndGame={handleEndGame} courseId={courseId} roundId={roundId}/> : <NewGameForm gameOn={gameOn} handleGameOn={handleGameOn}/>}            
+            {gameOn ? <ScoreSheet playerList={playerList} courseId={courseId} roundId={roundId}/> : null} 
         </div>
     )
 }

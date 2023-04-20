@@ -209,6 +209,16 @@ class CheckSession(Resource):
 
 api.add_resource(CheckSession, '/check_session')
 
+class Courses(Resource):
+    def get(self, id):
+        course = Course.query.filter(Course.id == id).one_or_none()
+        if not course:
+            return make_response({'error': 'error 404 Course not found.'}, 404)
+        else:
+            return make_response(course.to_dict(), 200)
+        
+api.add_resource(Courses, '/courses/<int:id>')
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
