@@ -1,8 +1,8 @@
-"""test
+"""add tables
 
-Revision ID: 174b91439957
+Revision ID: 10d263ea8a9b
 Revises: 
-Create Date: 2023-04-19 11:28:29.407759
+Create Date: 2023-04-20 13:43:32.102148
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '174b91439957'
+revision = '10d263ea8a9b'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -68,11 +68,13 @@ def upgrade():
     sa.Column('date', sa.Date(), server_default=sa.text('(CURRENT_DATE)'), nullable=True),
     sa.Column('course_id', sa.Integer(), nullable=True),
     sa.Column('tournament_id', sa.Integer(), nullable=True),
+    sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['course_id'], ['courses.id'], name=op.f('fk_rounds_course_id_courses')),
     sa.ForeignKeyConstraint(['tournament_id'], ['tournaments.id'], name=op.f('fk_rounds_tournament_id_tournaments')),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], name=op.f('fk_rounds_user_id_users')),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('scorecards',
