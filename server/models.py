@@ -122,26 +122,27 @@ class Scorecard(DefaultBase):
     
     def set_score_from_hole(self, hole_number, new_score):
         score_dict = {
-        '1': self.score_1,
-        '2': self.score_2,
-        '3': self.score_3,
-        '4': self.score_4,
-        '5': self.score_5,
-        '6': self.score_6,
-        '7': self.score_7,
-        '8': self.score_8,
-        '9': self.score_9,
-        '10': self.score_10,
-        '11': self.score_11,
-        '12': self.score_12,
-        '13': self.score_13,
-        '14': self.score_14,
-        '15': self.score_15,
-        '16': self.score_16,
-        '17': self.score_17,
-        '18': self.score_18
+        '1': 'score_1',
+        '2': 'score_2',
+        '3': 'score_3',
+        '4': 'score_4',
+        '5': 'score_5',
+        '6': 'score_6',
+        '7': 'score_7',
+        '8': 'score_8',
+        '9': 'score_9',
+        '10': 'score_10',
+        '11': 'score_11',
+        '12': 'score_12',
+        '13': 'score_13',
+        '14': 'score_14',
+        '15': 'score_15',
+        '16': 'score_16',
+        '17': 'score_17',
+        '18': 'score_18'
     }
-        score_dict[str(hole_number)] = new_score
+        h = score_dict[str(hole_number)]
+        setattr(self, h, new_score)
 
 class Course(DefaultBase):
     __tablename__ = 'courses'
