@@ -4,15 +4,6 @@ import * as yup from 'yup'
 
 function Login({ handleLogin }) {
 
-  // useEffect(() => {
-  //   fetch('http://127.0.0.1:5555/users')
-  //   .then(resp => resp.json())
-  //   .then(data => {
-  //     setUsers(data)
-  //     console.log(data)
-  //   })
-  // }, [])
-
   const formSchema = yup.object().shape({
     username: yup.string().required("Must enter username").max(15).min(4),
     password: yup.string().required("Must enter password").max(30).min(6)
