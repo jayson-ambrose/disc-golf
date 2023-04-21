@@ -5,13 +5,14 @@ function User({ user, setUser }) {
     const [rounds, setRounds] = useState([]);
 
     useEffect(() => {
+        if (user !== null){
         fetch(`/users/${user['id']}/rounds`)
             .then(r => r.json())
             .then(data => {
                 console.log(data);
                 setRounds(data)
             })
-    },[user]);
+    }},[user]);
     
     let userRound
     function createRoundList (rounds) {

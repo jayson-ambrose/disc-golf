@@ -26,8 +26,8 @@ class User(DefaultBase):
     username = db.Column(db.String, unique=True)
     _password = db.Column(db.String, nullable=False)
 
-    players = db.relationship('Player', backref='user', cascade='all, delete-orphan')
-    rounds = db.relationship('Round', backref='user', cascade='all, delete-orphan')
+    players = db.relationship('Player', backref='user', cascade='all, delete')
+    rounds = db.relationship('Round', backref='user', cascade='all, delete')
 
     serialize_rules = ('-_password', '-password', '-players','-created_at', '-updated_at', '-rounds')
 
@@ -147,6 +147,13 @@ class Scorecard(DefaultBase):
     }
         h = score_dict[str(hole_number)]
         setattr(self, h, new_score)
+
+    def total_score(self):
+        holes = range(1, 18)
+        sum = 0
+        for n in holes:
+            sum += self.get_score_from_hole(n)
+        return sum
 
 class Course(DefaultBase):
     __tablename__ = 'courses'
