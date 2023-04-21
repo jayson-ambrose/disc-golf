@@ -227,6 +227,13 @@ class CoursesById(Resource):
         
 api.add_resource(CoursesById, '/courses/<int:id>')
 
+class Courses(Resource):
+    def get(self):
+        course_list = Course.query.all()
+        return make_response(list(map(lambda c: c.to_dict(only=('id', 'name', 'city', 'state')), course_list)), 200)
+    
+api.add_resource(Courses, '/courses')
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
