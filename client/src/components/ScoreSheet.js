@@ -12,19 +12,24 @@ function ScoreSheet({courseId, roundId, playerList, scorecards, getScorecards}) 
     }, [])
 
 
-    useEffect(() => {
-      fetch(`/rounds/${roundId}/scorecards`)
-      .then(resp => resp.json())
-      .then(data => console.log(data))
-    }, [])
+    // useEffect(() => {
+    //   fetch(`/rounds/${roundId}/scorecards`)
+    //   .then(resp => resp.json())
+    //   .then(data => console.log(data))
+    // }, [])
 
     console.log(course.holes)
     
     let scorecardDisplay = null
     let holeDisplay = null
 
+    let totalPar = 0
+    let totalDist = 0
+
     if (course.holes != undefined){
       holeDisplay = course.holes.map((hole) => {
+        totalPar = hole.par + totalPar
+        totalDist = hole.distance + totalDist
         return (
           <tr key={hole.hole_number}>
             <td>{hole.hole_number}</td>
@@ -116,6 +121,11 @@ function ScoreSheet({courseId, roundId, playerList, scorecards, getScorecards}) 
                       <th>DIST</th>
                   </tr>
                   {holeDisplay}
+                  <tr>
+                      <th>TOT</th>
+                      <th>{totalPar}</th>
+                      <th>{totalDist}</th>
+                  </tr>
               </tbody>
           </table>
           {scorecardDisplay}          
