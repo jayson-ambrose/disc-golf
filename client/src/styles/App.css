@@ -30,3 +30,14 @@ html {
 .scoretable {
   display: flex;
 }
+
+.account.table {
+  min-width: 50%;
+  font-size: 1.2em;
+}
+
+.user-round td {
+  border-top: 1px solid black;
+  border-collapse: collapse;
+  padding: 10px;
+}

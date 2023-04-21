@@ -152,7 +152,8 @@ class Scorecard(DefaultBase):
         holes = range(1, 18)
         sum = 0
         for n in holes:
-            sum += self.get_score_from_hole(n)
+            if self.get_score_from_hole(n) != -1:
+                sum += self.get_score_from_hole(n)
         return sum
 
 class Course(DefaultBase):
