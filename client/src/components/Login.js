@@ -26,20 +26,12 @@ function Login({ handleLogin }) {
 
     validationSchema: formSchema,
 
-    onSubmit: (values) => {
-      fetch('/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(values)
-      }).then(resp => {
-        if (resp.ok){
-        resp.json().then(data=> handleLogin(data))
+    onSubmit: (values, {resetForm}) => {
+
+      handleLogin(values)
+      resetForm()
 
       }})
-    }
-  })
 
   return (
     <div>      

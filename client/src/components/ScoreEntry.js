@@ -26,7 +26,7 @@ function ScoreEntry({playerList, handleEndGame, roundId, setScorecards, scorecar
 
     validationSchema: formSchema,
 
-    onSubmit: (values) => {      
+    onSubmit: (values) => {        
 
       const scores = [values.score_1, values.score_2, values.score_3, values.score_4]
 
@@ -61,7 +61,7 @@ function ScoreEntry({playerList, handleEndGame, roundId, setScorecards, scorecar
           fetch(`/rounds/${roundId}/scorecards`)
           .then (resp => resp.json())
           .then (data => setScorecards(data))
-        )
+        )        
     }
    }) 
 
@@ -87,7 +87,7 @@ function ScoreEntry({playerList, handleEndGame, roundId, setScorecards, scorecar
   return (
     <div>
       <h1>Enter Scores for hole {holeNum}</h1>
-      <form  onSubmit={formik.handleSubmit}>  
+      <form onSubmit={formik.handleSubmit}>  
         <table>
             <tbody>
                 <tr>

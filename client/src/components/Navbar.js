@@ -20,6 +20,9 @@ function Navbar() {
       <Link to='Account'>
         <li>-View Account-</li>
       </Link>
+      <Link to='Courses'>
+        <li>-Courses-</li>
+      </Link>
     </div>
 
   );

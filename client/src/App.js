@@ -4,11 +4,12 @@ import { Switch, Route } from "react-router-dom";
 import './components/Navbar'
 import Navbar from './components/Navbar';
 import GameTracker from './components/GameTracker'
-import Browse from './components/Browse'
-import Stats from './components/Stats'
+// import Browse from './components/Browse'
+// import Stats from './components/Stats'
 import Login from './components/Login'
 import CreateAccount from './components/CreateAccount'
 import User from './components/User'
+import CourseList from './components/CourseList'
 
 function App() {
 
@@ -27,15 +28,26 @@ function App() {
     
   }, [])
 
-  function handleLogin (user){
-      setUser(user)}
+  function handleLogin (val){
 
-  let greeting
-  if (user) {
-    greeting = <h1>{user.username} is logged in.</h1>
-  }
-  else {
-    greeting = <h1>Log In</h1>
+    fetch('/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(val)
+      }).then(resp => {
+        if (resp.ok){
+        resp.json().then(data=> setUser(data))
+        }})}
+      
+
+   let greeting
+   if (user) {
+     greeting = <h1>{user.username} is logged in.</h1>
+   }
+   else {
+     greeting = <h1>Log In</h1>
   }
 
   function handleLogout (user) {
@@ -69,6 +81,10 @@ function App() {
         <Route exact path='/Account'>
           <User user={user} setUser={setUser}/>
         </Route>
+        <Route exact path='/Courses'>
+          <CourseList />
+        </Route>
+
       </Switch>
     </div>
   );
