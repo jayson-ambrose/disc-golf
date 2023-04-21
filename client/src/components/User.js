@@ -18,7 +18,7 @@ function User({ user, setUser }) {
     function createRoundList (rounds) {
         userRound = rounds.map(round => {
             return (
-                <UserRound courseName={round['course']['name']} roundDate={round['date']} players={round['players']}/>
+                <UserRound courseName={round['course']['name']} roundDate={round['date']} players={round['players']} scores={round['scorecards']} key={round['id']}/>
             )
         })
     }
@@ -43,7 +43,15 @@ function User({ user, setUser }) {
                     <tr>
                         <th>Course</th>
                         <th>Date</th>
-                        <th>Players</th>
+                        <th>Player 1 Name</th>
+                        <th>Player 1 Score</th>
+                        <th>Player 2 Name</th>
+                        <th>Player 2 Score</th>
+                        <th>Player 3 Name</th>
+                        <th>Player 3 Score</th>
+                        <th>Player 4 Name</th>
+                        <th>Player 4 Score</th>
+
                     </tr>
                 </thead>
                 <tbody>
