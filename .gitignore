@@ -54,4 +54,5 @@ jspm_packages
 */__pycache__/*
 
 # Database
-/server/instance
+/server/instance/*
+/server/migrations/versions/*

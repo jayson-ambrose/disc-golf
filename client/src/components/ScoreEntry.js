@@ -32,8 +32,8 @@ function ScoreEntry({playerList, handleEndGame}) {
 
         const playerNum = playerList.indexOf(player) + 1
         return (            
-            <td key={player}>
-                <label>{player}</label>
+            <td key={player.name}>
+                <label>{player.name}</label>
                 <input type='text' name={`score_${playerNum}`} onChange={formik.handleChange}/>
             </td>)
 })

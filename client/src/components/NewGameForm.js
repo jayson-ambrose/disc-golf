@@ -38,9 +38,7 @@ function NewGameForm({handleGameOn}) {
             if (player != '') {
                 post_values.players.push(player)
             }
-        })
-
-        handleGameOn()
+        })   
 
         console.log('game on!')
         console.log(post_values)
@@ -53,7 +51,7 @@ function NewGameForm({handleGameOn}) {
             body: JSON.stringify(post_values)
           }).then(resp => {
             if (resp.ok){
-            resp.json().then(data=> console.log(data))    
+            resp.json().then(data=> handleGameOn(data))    
           }})
           
     }})
