@@ -57,4 +57,5 @@ jspm_packages
 
 
 # Database
-/server/instance
+/server/instance/*
+/server/migrations/versions/*

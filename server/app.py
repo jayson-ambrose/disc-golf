@@ -94,7 +94,7 @@ api.add_resource(UserById, '/users/<int:id>')
 class RoundsByUserId(Resource):
     def get(self, id):
         round_list = Round.query.filter(Round.user_id == id).all()
-        return make_response(list(map(lambda x: x.to_dict(only=('date', 'user.username', 'course.name', 'players.name')), round_list)), 200)
+        return make_response(list(map(lambda x: x.to_dict(only=('id', 'date', 'course.name', 'players.name')), round_list)), 200)
     
 api.add_resource(RoundsByUserId, '/users/<int:id>/rounds')
         
@@ -105,7 +105,6 @@ class Rounds(Resource):
         return make_response(round_list, 200)
     
     def post(self):
-        session['user_id'] = 1
         req = request.get_json()
         r = Round(course_id=req['course_id'], tournament_id=req['tournament_id'], user_id=session['user_id'])
         db.session.add(r)

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 
 function ScoreSheet({courseId, roundId, playerList, scorecards, getScorecards}) {
 
+
   const [course, setCourse] = useState({})
 
     useEffect(() => {
@@ -10,6 +11,15 @@ function ScoreSheet({courseId, roundId, playerList, scorecards, getScorecards}) 
       .then(data => setCourse(data))
     }, [])
 
+
+    useEffect(() => {
+      fetch(`/rounds/${roundId}/scorecards`)
+      .then(resp => resp.json())
+      .then(data => console.log(data))
+    }, [])
+
+    console.log(course.holes)
+    
     let scorecardDisplay = null
     let holeDisplay = null
 
@@ -23,6 +33,7 @@ function ScoreSheet({courseId, roundId, playerList, scorecards, getScorecards}) 
           </tr>
         )
       })}
+
 
     if (scorecards.length > 0) {
       scorecardDisplay = scorecards.map((scorecard) => {
