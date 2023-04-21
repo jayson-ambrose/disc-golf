@@ -27,15 +27,26 @@ function App() {
     
   }, [])
 
-  function handleLogin (user){
-      setUser(user)}
+  function handleLogin (val){
 
-  let greeting
-  if (user) {
-    greeting = <h1>{user.username} is logged in.</h1>
-  }
-  else {
-    greeting = <h1>Log In</h1>
+    fetch('/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(val)
+      }).then(resp => {
+        if (resp.ok){
+        resp.json().then(data=> setUser(data))
+        }})}
+      
+
+   let greeting
+   if (user) {
+     greeting = <h1>{user.username} is logged in.</h1>
+   }
+   else {
+     greeting = <h1>Log In</h1>
   }
 
   function handleLogout (user) {

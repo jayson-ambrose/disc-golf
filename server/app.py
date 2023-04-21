@@ -64,7 +64,7 @@ class Users(Resource):
             db.session.commit()
             return make_response(u.to_dict(), 201)
         except IntegrityError:
-            session.rollback()
+            db.session.rollback()
             return make_response({'error': 'error 400: Username already taken!'}, 400)
         
 api.add_resource(Users, '/users')
@@ -106,7 +106,7 @@ class Rounds(Resource):
     
     def post(self):
         req = request.get_json()
-        r = Round(course_id=req['course_id'], tournament_id=req['tournament_id'], user_id=session['user_id'])
+        r = Round(course_id=req['course_id'], tournament_id=req['tournament_id'], user_id=session.get('user_id'))
         db.session.add(r)
         db.session.flush()
 

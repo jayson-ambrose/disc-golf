@@ -20,6 +20,8 @@ function CreateAccount({handleLogin}) {
         validationSchema: formSchema,
     
         onSubmit: (values) => {
+
+
           fetch('/users', {
             method: 'POST',
             headers: {
@@ -28,7 +30,14 @@ function CreateAccount({handleLogin}) {
             body: JSON.stringify(values)
           }).then(resp => {
             if (resp.ok){
-            resp.json().then(data=> handleLogin(data))
+            resp.json().then(data=> console.log(data))
+
+            const login_obj = {
+              username: values.username,
+              password: values.password
+            }
+
+            handleLogin(login_obj)
     
           }})
         }
