@@ -26,8 +26,8 @@ class User(DefaultBase):
     username = db.Column(db.String, unique=True)
     _password = db.Column(db.String, nullable=False)
 
-    players = db.relationship('Player', backref='user', cascade='all, delete-orphan')
-    rounds = db.relationship('Round', backref='user', cascade='all, delete-orphan')
+    players = db.relationship('Player', backref='user', cascade='all, delete')
+    rounds = db.relationship('Round', backref='user', cascade='all, delete')
 
     serialize_rules = ('-_password', '-password', '-players','-created_at', '-updated_at', '-rounds')
 
