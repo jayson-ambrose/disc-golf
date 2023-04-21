@@ -2,7 +2,7 @@ import React from 'react'
 import { FormikContext, useFormik } from 'formik'
 import * as yup from 'yup'
 
-function NewGameForm({handleGameOn}) {
+function NewGameForm({handleGameOn, getScorecards, getPlayersByRoundId}) {
 
     const formSchema = yup.object().shape({
         course_id: yup.number().required("Must enter a course ID."),
@@ -26,6 +26,8 @@ function NewGameForm({handleGameOn}) {
     validationSchema: formSchema,
 
     onSubmit: (values) => {
+
+        
         const post_values = {
             course_id: values.course_id,
             tournament_id: values.tournament_id,
@@ -33,6 +35,7 @@ function NewGameForm({handleGameOn}) {
         }
 
         const playersList = [values.player_1, values.player_2, values.player_3, values.player_4]
+        console.log(playersList)
 
         playersList.forEach((player)=> {
             if (player != '') {
@@ -51,7 +54,8 @@ function NewGameForm({handleGameOn}) {
             body: JSON.stringify(post_values)
           }).then(resp => {
             if (resp.ok){
-            resp.json().then(data=> handleGameOn(data))    
+            resp.json().then(data=>{
+                handleGameOn(data)} )   
           }})
           
     }})
