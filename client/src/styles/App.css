@@ -28,9 +28,15 @@ html {
 }
 
 .scoretable {
-  display: flex;  
+  display: flex;
+  font-size: 20px;
 }
 
-.scoretable > td {
+.scoretable td {
   text-align: center;
 }
+
+.scoretable table tr td {
+  border: 1px solid black;
+}
+

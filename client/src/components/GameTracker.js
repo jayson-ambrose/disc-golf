@@ -3,7 +3,7 @@ import NewGameForm from './NewGameForm'
 import ScoreSheet from './ScoreSheet'
 import ScoreEntry from './ScoreEntry'
 
-function GameTracker() {
+function GameTracker({user}) {
 
     const [gameOn, setGameOn] = useState(false) //set back to false for production
     const [playerList, setPlayerList] = useState([])    
@@ -25,7 +25,7 @@ function GameTracker() {
             data.players.forEach((player) => {
                 playerArray.push(player)
             })
-            setPlayerList(playerArray)            
+            setPlayerList(playerArray)         
         })
     }
 
@@ -45,6 +45,12 @@ function GameTracker() {
         setPlayerList([])
         setScorecards([])        
         setGameOn(false)
+    }
+
+    if (user === null){
+        return(
+            <h2>Please log in or sign up to use game tracker.</h2>
+        )
     }
 
     return(

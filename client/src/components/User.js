@@ -35,6 +35,12 @@ function User({ user, setUser }) {
         }
     }
 
+    if (user === null){
+        return(
+            <h2>Please log in to view account details.</h2>
+        )
+    }
+
     return (
         <div>
             <h1>Your Rounds</h1>

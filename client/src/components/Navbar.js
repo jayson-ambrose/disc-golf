@@ -8,12 +8,12 @@ function Navbar() {
       <Link to='GameTracker'>
         <li>-Game Tracker-</li>
       </Link>
-      <Link to='Browse'>
+      {/* <Link to='Browse'>
         <li>-Browse-</li>
       </Link>
       <Link to='Stats'>
         <li>-Stats-</li>
-      </Link>
+      </Link> */}
       <Link to='CreateAccount'>
         <li>-Create Account-</li>
       </Link>

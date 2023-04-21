@@ -55,14 +55,14 @@ function App() {
       <Switch>
         
         <Route exact path='/GameTracker'>
-          <GameTracker />
+          <GameTracker user={user}/>
         </Route>
-        <Route exact path='/Browse'>
+        {/* <Route exact path='/Browse'>
           <Browse />
-        </Route>
-        <Route exact path='/Stats'>
+        </Route> */}
+        {/* <Route exact path='/Stats'>
           <Stats />
-        </Route> 
+        </Route>  */}
         <Route exact path='/CreateAccount'>
           <CreateAccount handleLogin={handleLogin} />
         </Route>  
