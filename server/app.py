@@ -153,7 +153,7 @@ api.add_resource(RoundById, '/rounds/<int:id>')
 class ScorecardsByRoundId(Resource):
     def get(self, id):
         score_list = Scorecard.query.filter(Scorecard.round_id == id).all()
-        return make_response(list(map(lambda score: score.to_dict(rules=('-player','-round')), score_list)), 200)
+        return make_response(list(map(lambda score: score.to_dict(rules=('-player','-round', 'total_score')), score_list)), 200)
     
     def patch(self, id):
         score_list = Scorecard.query.filter(Scorecard.round_id == id).all()
