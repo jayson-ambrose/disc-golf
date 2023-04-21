@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Signika+Negative:wght@400;700&display=swap');
 
 html {
-  background: #525b4b;
+  background: #3e6d1a;
   color: rgb(0, 0, 0);
   font-family: 'Signika Negative', sans-serif;  
 }
 
 .component {
-  background-color: #d6e8c7;
+  background-color: #b0eeb2;
 }
 
 .navbar {
@@ -29,6 +29,15 @@ html {
 
 .scoretable {
   display: flex;
+  font-size: 20px;
+}
+
+.scoretable td {
+  text-align: center;
+}
+
+.scoretable table tr td {
+  border: 1px solid black;
 }
 
 .account.table {

@@ -5,6 +5,7 @@ import * as yup from 'yup'
 function ScoreEntry({playerList, handleEndGame, roundId, setScorecards, scorecards}) {
 
   const [holeNum, setHoleNum] = useState(1)
+  const [gameProgress, setGameProgress] = useState(true)
 
     const numPlayers = playerList.length   
 
@@ -42,6 +43,12 @@ function ScoreEntry({playerList, handleEndGame, roundId, setScorecards, scorecar
       })
       
       setHoleNum(holeNum + 1)
+      if (holeNum === 18){
+        setGameProgress(false)
+      }
+      else {
+        setGameProgress(true)
+      }
 
       fetch(`/rounds/${roundId}/scorecards`, {
         method: 'PATCH',
@@ -57,9 +64,7 @@ function ScoreEntry({playerList, handleEndGame, roundId, setScorecards, scorecar
         )
     }
    }) 
-   
-   
-   
+
    const displayPlayers = playerList.map((player) => {
 
         const playerNum = playerList.indexOf(player) + 1
@@ -69,6 +74,15 @@ function ScoreEntry({playerList, handleEndGame, roundId, setScorecards, scorecar
                 <input type='text' name={`score_${playerNum}`} onChange={formik.handleChange}/>
             </td>)
 })
+
+  if (gameProgress === false) {
+    return (
+      <div>
+        <h2>Game Over, click 'End Game' to end game.</h2>
+        <button onClick={handleEndGame}>End game</button>
+      </div>
+    )
+  }
     
   return (
     <div>
