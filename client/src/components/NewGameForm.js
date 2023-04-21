@@ -71,7 +71,7 @@ function NewGameForm({handleGameOn}) {
                             </td>
                         </tr>                
                         <tr>
-                            <td><label>Tournamnet ID</label></td>
+                            <td><label>Tournament ID</label></td>
                             <td><input
                                 type='text'
                                 name='tournament_id'

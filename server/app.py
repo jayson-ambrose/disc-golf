@@ -104,7 +104,6 @@ class Rounds(Resource):
         return make_response(round_list, 200)
     
     def post(self):
-        session['user_id'] = 1
         req = request.get_json()
         r = Round(course_id=req['course_id'], tournament_id=req['tournament_id'], user_id=session['user_id'])
         db.session.add(r)

@@ -67,7 +67,7 @@ function App() {
           <CreateAccount handleLogin={handleLogin} />
         </Route>  
         <Route exact path='/Account'>
-          <User user={user}/>
+          <User user={user} setUser={setUser}/>
         </Route>
       </Switch>
     </div>
