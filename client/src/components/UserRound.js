@@ -9,7 +9,7 @@ function UserRound({ courseName, roundDate, players }) {
     const playerNames = playerList.join(', ')
 
     return (
-        <tr>
+        <tr className='user-round table-row'>
             <td>{courseName}</td>
             <td>{roundDate}</td>
             <td>{playerNames}</td>

@@ -38,7 +38,7 @@ function User({ user, setUser }) {
     return (
         <div>
             <h1>Your Rounds</h1>
-            <table>
+            <table className='account table'>
                 <thead>
                     <tr>
                         <th>Course</th>
