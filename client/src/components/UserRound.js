@@ -9,10 +9,10 @@ function UserRound({ courseName, roundDate, players, scores }) {
     const playerNames = players.map(player => {
         const pScore = scores.find(score => score.player_id === player.id);
         return (
-            <>
-                <td key={player.id}>{player.name}</td>
-                <td key={pScore.player_id*2}>{pScore.total_score}</td>
-            </>
+            <React.Fragment key={player.id}>
+                <td>{player.name}</td>
+                <td>{pScore.total_score}</td>
+            </React.Fragment>
         )
     })
 
