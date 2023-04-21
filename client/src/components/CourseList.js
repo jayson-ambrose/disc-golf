@@ -36,13 +36,15 @@ function CourseList() {
         <input placeholder="State" value={filter} onChange={handleChange}/> 
       </div>
       <table className='coursetable'>
-        <tr>
-            <th>Course ID</th>
-            <th>Name</th>
-            <th>City</th>
-            <th>State</th>
-        </tr>
-        {displayCourses}
+        <tbody>
+            <tr>
+                <th>Course ID</th>
+                <th>Name</th>
+                <th>City</th>
+                <th>State</th>
+            </tr>
+            {displayCourses}
+        </tbody>
       </table>
       
     </div>

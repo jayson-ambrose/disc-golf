@@ -26,8 +26,7 @@ function NewGameForm({handleGameOn, getScorecards, getPlayersByRoundId}) {
     validationSchema: formSchema,
 
     onSubmit: (values, {resetForm}) => {
-
-        
+                
         const post_values = {
             course_id: values.course_id,
             tournament_id: values.tournament_id,
@@ -35,7 +34,6 @@ function NewGameForm({handleGameOn, getScorecards, getPlayersByRoundId}) {
         }
 
         const playersList = [values.player_1, values.player_2, values.player_3, values.player_4]
-        console.log(playersList)
 
         playersList.forEach((player)=> {
             if (player != '') {

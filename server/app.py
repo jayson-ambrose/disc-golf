@@ -32,18 +32,18 @@ class Login(Resource):
 
     def post(self):
         req_data = request.get_json()
-        user = User.query.filter(User.username == req_data['username']).first()
-
-        if user.auth(req_data['password']) == False:
-            print ('wrong password')
-            return make_response({"error":"wrong password"}, 401) #comment this back in
+        user = User.query.filter(User.username == req_data['username']).first()       
         
-        try:            
+        try:
+            if user.auth(req_data['password']) == False:
+                print ('wrong password')
+                return make_response({"error":"wrong password"}, 401) 
+                      
             session['user_id'] = user.id
             return make_response(user.to_dict(), 200)
         
         except:
-            return make_response( {'error': '404 user not found'}, 404)
+            return make_response( {'error': '401 user not found or incorrect password'}, 401)
         
 api.add_resource(Login, '/login')
 
