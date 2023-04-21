@@ -26,3 +26,7 @@ html {
 .navbar > :hover {
   font-weight: bold;
 }
+
+.scoretable {
+  display: flex;
+}

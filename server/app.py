@@ -36,6 +36,7 @@ class Login(Resource):
 
         if user.auth(req_data['password']) == False:
             print ('wrong password')
+            # return make_response({"error":"wrong password"}, 401) #comment this back in
         
         try:            
             session['user_id'] = user.id
