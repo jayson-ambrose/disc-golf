@@ -42,11 +42,19 @@ html {
 
 .account.table {
   min-width: 50%;
+  border-collapse: collapse;
   font-size: 1.2em;
 }
 
+.account.table tr {
+  border-bottom: 1px solid black;
+  padding: 40px;
+}
+
+.account.table tr:last-child {
+  border-bottom: 0px solid black;
+}
+
 .user-round td {
-  border-top: 1px solid black;
-  border-collapse: collapse;
-  padding: 10px;
+  padding: 20px 50px;
 }
