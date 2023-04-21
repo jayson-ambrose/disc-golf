@@ -19,8 +19,7 @@ function CreateAccount({handleLogin}) {
     
         validationSchema: formSchema,
     
-        onSubmit: (values) => {
-
+        onSubmit: (values, {resetForm}) => {
 
           fetch('/users', {
             method: 'POST',
@@ -38,6 +37,7 @@ function CreateAccount({handleLogin}) {
             }
 
             handleLogin(login_obj)
+            resetForm()
     
           }})
         }

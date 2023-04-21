@@ -26,9 +26,10 @@ function Login({ handleLogin }) {
 
     validationSchema: formSchema,
 
-    onSubmit: (values) => {
+    onSubmit: (values, {resetForm}) => {
 
       handleLogin(values)
+      resetForm()
 
       }})
 

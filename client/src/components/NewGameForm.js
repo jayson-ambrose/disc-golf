@@ -25,7 +25,7 @@ function NewGameForm({handleGameOn, getScorecards, getPlayersByRoundId}) {
 
     validationSchema: formSchema,
 
-    onSubmit: (values) => {
+    onSubmit: (values, {resetForm}) => {
 
         
         const post_values = {
@@ -58,6 +58,8 @@ function NewGameForm({handleGameOn, getScorecards, getPlayersByRoundId}) {
                 handleGameOn(data)} )   
 
           }})
+
+          resetForm()
           
     }})
 

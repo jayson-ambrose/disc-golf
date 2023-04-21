@@ -4,11 +4,12 @@ import { Switch, Route } from "react-router-dom";
 import './components/Navbar'
 import Navbar from './components/Navbar';
 import GameTracker from './components/GameTracker'
-import Browse from './components/Browse'
-import Stats from './components/Stats'
+// import Browse from './components/Browse'
+// import Stats from './components/Stats'
 import Login from './components/Login'
 import CreateAccount from './components/CreateAccount'
 import User from './components/User'
+import CourseList from './components/CourseList'
 
 function App() {
 
@@ -80,6 +81,10 @@ function App() {
         <Route exact path='/Account'>
           <User user={user} setUser={setUser}/>
         </Route>
+        <Route exact path='/Courses'>
+          <CourseList />
+        </Route>
+
       </Switch>
     </div>
   );
