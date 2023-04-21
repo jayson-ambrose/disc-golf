@@ -16,7 +16,10 @@ function Navbar() {
       </Link>
       <Link to='CreateAccount'>
         <li>-Create Account-</li>
-      </Link>        
+      </Link>
+      <Link to='Account'>
+        <li>View Account</li>
+      </Link>
     </div>
 
   );

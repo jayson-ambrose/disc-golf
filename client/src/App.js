@@ -8,6 +8,7 @@ import Browse from './components/Browse'
 import Stats from './components/Stats'
 import Login from './components/Login'
 import CreateAccount from './components/CreateAccount'
+import User from './components/User'
 
 function App() {
 
@@ -65,7 +66,9 @@ function App() {
         <Route exact path='/CreateAccount'>
           <CreateAccount handleLogin={handleLogin} />
         </Route>  
-        
+        <Route exact path='/Account'>
+          <User user={user}/>
+        </Route>
       </Switch>
     </div>
   );
