@@ -14,15 +14,16 @@ function Navbar() {
       <Link to='Stats'>
         <li>-Stats-</li>
       </Link> */}
-      <Link to='CreateAccount'>
-        <li>-Create Account-</li>
-      </Link>
       <Link to='Account'>
         <li>-View Account-</li>
       </Link>
       <Link to='Courses'>
         <li>-Courses-</li>
       </Link>
+      <Link to='CreateAccount'>
+        <li>-Create Account-</li>
+      </Link>      
+      
     </div>
 
   );

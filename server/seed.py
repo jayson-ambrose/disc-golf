@@ -41,7 +41,7 @@ if __name__ == '__main__':
 
         print('generating Courses...')
 
-        for c in range (5):
+        for c in range (100):
             course = Course(name = fake.company(), city= fake.city(), state = fake.state())
             db.session.add(course)
             db.session.commit()
