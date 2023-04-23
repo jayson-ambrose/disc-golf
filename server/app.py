@@ -13,7 +13,7 @@ from sqlalchemy.exc import IntegrityError
 from config import app, db, api
 from models import DefaultBase, User, Player, Round, Tournament, Scorecard, Course, Hole
 
-app.secret_key = "aggabadvffa"
+app.secret_key = "aggaba/434G.mgfYTad5sfh//,GF,vffa"
 
 # Views go here!
 
